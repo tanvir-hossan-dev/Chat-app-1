@@ -1,0 +1,110 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Error from "../error/Error";
+import FormInput from "./FormInput";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+const Register = () => {
+  const initialState = {
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  };
+
+  const formValid = () => {
+    const { name, email, password, confirmPassword } = inputs;
+    if (!name.length && !email.length && !password.length && !confirmPassword.length) {
+      return setError("Enter your all information");
+    } else if (!name.length) {
+      return setError("Enter your name");
+    } else if (!email.length) {
+      return setError("Enter your email");
+    } else if (!password.length) {
+      return setError("Enter your password");
+    } else if (!password.length) {
+      return setError("Enter your password");
+    } else if (!confirmPassword.length) {
+      return setError("Enter your confirm password");
+    } else if (!confirmPassword.length) {
+      return setError("Enter your confirm password");
+    } else if (password.length < 6) {
+      return setError("Password at least 6 latter");
+    } else if (password !== confirmPassword) {
+      return setError("Confirm password does not match");
+    } else {
+      setError("");
+      return true;
+    }
+  };
+
+  const [inputs, setInputs] = useState({ ...initialState });
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  const handleOnChange = (e) => {
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    const { email, password } = inputs;
+    e.preventDefault();
+    if (formValid()) {
+      console.log("successfull");
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          console.log(user);
+        })
+        .catch((error) => {});
+      setInputs({ ...initialState });
+    }
+  };
+
+  return (
+    <div className="">
+      <div className="w-[650px] bg-[#f1f1f1] px-10 py-5 rounded-xl mx-auto">
+        <h2 className="font-pop font-bold text-[34px] text-textprimary">Get started with easily register</h2>
+        <p className="text-[20px] font-normal text-textprimary">Free register and you can enjoy it</p>
+        <div className="w-[480px]">
+          <form onSubmit={handleSubmit}>
+            <FormInput name="name" type="text" placeholder="Name" value={inputs.name} onChange={handleOnChange} />
+            <FormInput name="email" type="email" placeholder="E-mail" value={inputs.email} onChange={handleOnChange} />
+            <FormInput
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={inputs.password}
+              onChange={handleOnChange}
+            />
+            <FormInput
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirm Password"
+              value={inputs.confirmPassword}
+              onChange={handleOnChange}
+            />
+            <button
+              type="submit"
+              className="text-center w-full py-[15px] bg-bgprimary text-white font-medium rounded-3xl"
+            >
+              SIGN UP
+            </button>
+          </form>
+          <p className="text-textprimary mt-4 text-center font-pop text-[16px]">
+            Already have an account ?{" "}
+            <Link to="/login" className="text-[#EA6C00] font-bold">
+              Sign In
+            </Link>
+          </p>
+          {error && <Error message={error} />}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
