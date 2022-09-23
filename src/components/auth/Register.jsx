@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Error from "../error/Error";
 import FormInput from "./FormInput";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 const Register = () => {
   const initialState = {
@@ -20,8 +20,6 @@ const Register = () => {
       return setError("Enter your name");
     } else if (!email.length) {
       return setError("Enter your email");
-    } else if (!password.length) {
-      return setError("Enter your password");
     } else if (!password.length) {
       return setError("Enter your password");
     } else if (!confirmPassword.length) {
@@ -51,16 +49,25 @@ const Register = () => {
   };
 
   const handleSubmit = (e) => {
-    const { email, password } = inputs;
+    const { name, email, password } = inputs;
     e.preventDefault();
     if (formValid()) {
       console.log("successfull");
       createUserWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          console.log(user);
+          console.log("first", user);
+          updateProfile(auth.currentUser, {
+            displayName: name,
+          });
+
+          setInputs({ ...initialState });
         })
-        .catch((error) => {});
-      setInputs({ ...initialState });
+        .catch((error) => {
+          console.log(error.code);
+          if (error.code.includes("auth/email-already-in-use")) {
+            setError("This Email already in use. Please use another one.");
+          }
+        });
     }
   };
 
@@ -96,7 +103,7 @@ const Register = () => {
           </form>
           <p className="text-textprimary mt-4 text-center font-pop text-[16px]">
             Already have an account ?{" "}
-            <Link to="/login" className="text-[#EA6C00] font-bold">
+            <Link to="/" className="text-[#EA6C00] font-bold">
               Sign In
             </Link>
           </p>
