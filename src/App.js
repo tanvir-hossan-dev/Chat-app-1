@@ -1,15 +1,47 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import Message from "./components/message/Message";
+import HomePage from "./components/pages/HomePage";
+import MessagePage from "./components/pages/MessagePage";
+import PrivateRoute from "./components/privateroute/PrivateRoute";
+import PublicRoute from "./components/publicrouter/PublicRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/inbox/message" element={<Message />} />
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/inbox/message"
+          element={
+            <PrivateRoute>
+              <MessagePage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/inbox/home"
+          element={
+            <PrivateRoute>
+              <HomePage />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

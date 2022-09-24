@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Error from "../error/Error";
 import FormInput from "./FormInput";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
+import { userLogedIn } from "../../redux/features/loggedinuser/LoggedInUser";
+import { useDispatch, useSelector } from "react-redux";
 
 const Register = () => {
   const initialState = {
@@ -11,6 +14,14 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   };
+
+  const [inputs, setInputs] = useState({ ...initialState });
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const auth = getAuth();
+  const db = getDatabase();
+  const data = useSelector((state) => state.loggedInUser);
+  const dispatch = useDispatch();
 
   const formValid = () => {
     const { name, email, password, confirmPassword } = inputs;
@@ -36,11 +47,6 @@ const Register = () => {
     }
   };
 
-  const [inputs, setInputs] = useState({ ...initialState });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-  const auth = getAuth();
-
   const handleOnChange = (e) => {
     setInputs({
       ...inputs,
@@ -54,17 +60,22 @@ const Register = () => {
     if (formValid()) {
       console.log("successfull");
       createUserWithEmailAndPassword(auth, email, password)
-        .then((user) => {
-          console.log("first", user);
+        .then(() => {
           updateProfile(auth.currentUser, {
             displayName: name,
+          }).then(() => {
+            const uid = auth.currentUser.uid;
+            set(ref(db, "users/" + uid), {
+              username: name,
+              email: email,
+            });
+            dispatch(userLogedIn({ name, email, uid }));
           });
-
           setInputs({ ...initialState });
+          navigate("/inbox/home");
         })
         .catch((error) => {
-          console.log(error.code);
-          if (error.code.includes("auth/email-already-in-use")) {
+          if (error?.code.includes("auth/email-already-in-use")) {
             setError("This Email already in use. Please use another one.");
           }
         });

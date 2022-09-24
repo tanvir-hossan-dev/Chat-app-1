@@ -4,6 +4,8 @@ import Error from "../error/Error";
 import FormInput from "./FormInput";
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
+import { useDispatch } from "react-redux";
+import { userLogedIn } from "../../redux/features/loggedinuser/LoggedInUser";
 
 const Login = () => {
   const initialState = {
@@ -16,6 +18,7 @@ const Login = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+  const dispatch = useDispatch();
 
   const formValid = () => {
     const { email, password } = inputs;
@@ -44,8 +47,10 @@ const Login = () => {
     if (formValid()) {
       signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          console.log(user);
+          const { displayName, email, uid } = user.user;
+          dispatch(userLogedIn({ name: displayName, email, uid }));
           setInputs({ ...initialState });
+          navigate("/inbox/home");
         })
         .catch((error) => {
           if (error.code.includes("user-not-found")) {
