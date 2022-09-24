@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Error from "../error/Error";
 import FormInput from "./FormInput";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { FcGoogle } from "react-icons/fc";
+
 const Login = () => {
   const initialState = {
     email: "",
@@ -13,6 +15,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const auth = getAuth();
+  const provider = new GoogleAuthProvider();
 
   const formValid = () => {
     const { email, password } = inputs;
@@ -55,11 +58,43 @@ const Login = () => {
     }
   };
 
+  const handleGoggleSubmit = () => {
+    console.log("loading");
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log(result);
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
   return (
     <div className="mt-20">
       <div className="w-[565px] bg-[#f1f1f1] px-10 py-5 rounded-xl mx-auto">
         <h2 className="font-pop font-bold text-[34px] text-textprimary">Login to your account!</h2>
         <div className="w-[480px]">
+          <button
+            onClick={handleGoggleSubmit}
+            className="border-2 mt-4 border-solid border-[#B8B9CE]
+     rounded-lg text-[20px] font-pop outline-0 inline-block text-textprimary py-[10px] px-[15px] cursor-pointer"
+          >
+            <FcGoogle className="inline-block text-[26px] mr-2" />
+            Login with Google
+          </button>
           <form onSubmit={handleSubmit}>
             <FormInput name="email" type="email" placeholder="E-mail" value={inputs.email} onChange={handleOnChange} />
             <FormInput
