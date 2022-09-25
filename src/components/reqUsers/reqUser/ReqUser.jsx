@@ -2,7 +2,7 @@ import React from "react";
 import photo from "../../../assests/photo.png";
 import { getDatabase, ref, set, push } from "firebase/database";
 
-const User = ({ user, loggedInUser }) => {
+const ReqUser = ({ user, loggedInUser }) => {
   const hanldeAddFriend = () => {
     const db = getDatabase();
     set(push(ref(db, "addRequest/")), {
@@ -11,6 +11,8 @@ const User = ({ user, loggedInUser }) => {
       reciverId: user.uid,
     });
   };
+
+  console.log(user);
 
   return (
     <div className="flex py-3  justify-between items-center ">
@@ -25,11 +27,11 @@ const User = ({ user, loggedInUser }) => {
       </div>
       <div>
         <button onClick={hanldeAddFriend} className="bg-bgprimary px-2 text-white font-medium rounded-md py-2">
-          Add Friend
+          Confirm
         </button>
       </div>
     </div>
   );
 };
 
-export default User;
+export default ReqUser;
