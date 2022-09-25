@@ -4,15 +4,13 @@ import { getDatabase, ref, set, push } from "firebase/database";
 
 const ReqUser = ({ user, loggedInUser }) => {
   const hanldeAddFriend = () => {
-    const db = getDatabase();
-    set(push(ref(db, "addRequest/")), {
-      username: loggedInUser.name,
-      senderId: loggedInUser.uid,
-      reciverId: user.uid,
-    });
+    // const db = getDatabase();
+    // set(push(ref(db, "addRequest/")), {
+    //   username: loggedInUser.name,
+    //   senderId: loggedInUser.uid,
+    //   reciverId: user.uid,
+    // });
   };
-
-  console.log(user);
 
   return (
     <div className="flex py-3  justify-between items-center ">

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Users from "../users/Users";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useDispatch } from "react-redux";
 import { getAddRequests } from "../../redux/features/addRequestSlice/addRequestSlice";
 import ReqUsers from "../reqUsers/ReqUsers";
-
+import Users from "../users/Users";
 const HomeFirst = () => {
   const dispatch = useDispatch();
   const [addReq, setAddReq] = useState([]);
@@ -15,7 +14,7 @@ const HomeFirst = () => {
       const data = snapshot.val();
       const Arr = data && Object.keys(data).map((key) => ({ uid: key, ...data[key] }));
       setAddReq(Arr);
-      dispatch(getAddRequests(addReq));
+      dispatch(getAddRequests(Arr));
     });
   }, [dispatch]);
   return (

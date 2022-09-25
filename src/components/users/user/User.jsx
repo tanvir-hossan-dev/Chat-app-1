@@ -1,8 +1,11 @@
 import React from "react";
 import photo from "../../../assests/photo.png";
 import { getDatabase, ref, set, push } from "firebase/database";
+import { useSelector } from "react-redux";
 
 const User = ({ user, loggedInUser }) => {
+  const { friendRequest } = useSelector((state) => state.friendRequest);
+
   const hanldeAddFriend = () => {
     const db = getDatabase();
     set(push(ref(db, "addRequest/")), {
