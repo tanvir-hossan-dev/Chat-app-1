@@ -9,7 +9,8 @@ const ReqUsers = ({ title, height, addReq }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const friendRequests = addReq?.filter((user) => user.reciverId === loggedInUser.uid);
+    const friendRequests = addReq?.filter((user) => user.senderId === loggedInUser.uid).map((user) => user.reciverId);
+
     dispatch(getFriendRequest(friendRequests));
   }, [addReq, dispatch]);
 

@@ -1,19 +1,19 @@
 import React from "react";
-import HomeFirst from "../homePage/HomeFirst";
-import HomeSecond from "../homePage/HomeSecond";
-import HomeThired from "../homePage/HomeThired";
+import FriendReq from "../homePage/FriendReq";
+import Friends from "../homePage/Friends";
+import SuggestFriends from "../homePage/SuggestFriends";
 
 const Home = () => {
   return (
     <div className=" flex justify-between">
       <div className=" w-[420px] min-h-screen mx-4 ">
-        <HomeFirst />{" "}
+        <Friends />{" "}
       </div>
       <div className=" w-[420px] min-h-screen mx-4 ">
-        <HomeSecond />{" "}
+        <FriendReq />{" "}
       </div>
       <div className=" w-[410px] min-h-screen mx-4">
-        <HomeThired />{" "}
+        <SuggestFriends />{" "}
       </div>
     </div>
   );

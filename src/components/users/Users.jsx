@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import User from "./user/User";
 
 const Users = ({ title, height, usersArr }) => {
   const { loggedInUser } = useSelector((state) => state.loggedInUser);
   const { addRequests } = useSelector((state) => state.addRequests);
+  const { friendRequest } = useSelector((state) => state.friendRequest);
 
   let content;
 

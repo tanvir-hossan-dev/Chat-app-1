@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { getUsers } from "../../redux/features/users/usersSlice";
 import { useState } from "react";
 
-const HomeThired = () => {
+const SuggestFriends = () => {
   const dispatch = useDispatch();
   const [usersArr, setUsersArr] = useState([]);
   useEffect(() => {
@@ -16,10 +16,10 @@ const HomeThired = () => {
       const data = snapshot.val();
       const Arr = data && Object.keys(data).map((key) => ({ uid: key, ...data[key] }));
       setUsersArr(Arr);
-      dispatch(getUsers(usersArr));
+      dispatch(getUsers(Arr));
     });
   }, [dispatch]);
   return <Users usersArr={usersArr} title="Suggest Friends" height="h-[680px]" />;
 };
 
-export default HomeThired;
+export default SuggestFriends;

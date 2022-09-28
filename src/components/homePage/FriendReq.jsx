@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { getAddRequests } from "../../redux/features/addRequestSlice/addRequestSlice";
 import ReqUsers from "../reqUsers/ReqUsers";
 import Users from "../users/Users";
-const HomeFirst = () => {
+const FriendReq = () => {
   const dispatch = useDispatch();
   const [addReq, setAddReq] = useState([]);
   useEffect(() => {
@@ -19,10 +19,10 @@ const HomeFirst = () => {
   }, [dispatch]);
   return (
     <>
-      <Users title="Following" height="h-[320px]" />
-      <ReqUsers addReq={addReq} title="Friend Request" height="h-[320px]" />
+      {/* <Users title="Following" height="h-[320px]" /> */}
+      <ReqUsers addReq={addReq} title="Friend Request" height="h-[680px]" />
     </>
   );
 };
 
-export default HomeFirst;
+export default FriendReq;

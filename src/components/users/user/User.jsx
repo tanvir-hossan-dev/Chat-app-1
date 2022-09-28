@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 const User = ({ user, loggedInUser }) => {
   const { friendRequest } = useSelector((state) => state.friendRequest);
+  const { addRequests } = useSelector((state) => state.addRequests);
 
   const hanldeAddFriend = () => {
     const db = getDatabase();
@@ -15,7 +16,42 @@ const User = ({ user, loggedInUser }) => {
     });
   };
 
-  return (
+  const filterSenderId = addRequests
+    ?.filter((state) => state.reciverId === loggedInUser.uid)
+    .map((user) => user.senderId);
+
+  return filterSenderId?.length > 0 ? (
+    filterSenderId.includes(user.uid) ? null : (
+      <div className="flex py-3  justify-between items-center ">
+        <div>
+          <picture>
+            <img src={photo} alt="" />{" "}
+          </picture>
+        </div>
+        <div>
+          <h2 className="font-pop font-semibold text-[18px]">{user.username}</h2>
+          <p className="text-[#4D4D4D] font-pop text-[14px]">hello every one</p>
+        </div>
+        <div>
+          {friendRequest?.length > 0 ? (
+            friendRequest.includes(user.uid) ? (
+              <button disabled={true} className="bg-bgprimary px-2 text-white font-medium rounded-md py-2">
+                Requested
+              </button>
+            ) : (
+              <button onClick={hanldeAddFriend} className="bg-bgprimary px-2 text-white font-medium rounded-md py-2">
+                Add Request
+              </button>
+            )
+          ) : (
+            <button onClick={hanldeAddFriend} className="bg-bgprimary px-2 text-white font-medium rounded-md py-2">
+              Add Request
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  ) : (
     <div className="flex py-3  justify-between items-center ">
       <div>
         <picture>
@@ -27,9 +63,21 @@ const User = ({ user, loggedInUser }) => {
         <p className="text-[#4D4D4D] font-pop text-[14px]">hello every one</p>
       </div>
       <div>
-        <button onClick={hanldeAddFriend} className="bg-bgprimary px-2 text-white font-medium rounded-md py-2">
-          Add Friend
-        </button>
+        {friendRequest?.length > 0 ? (
+          friendRequest.includes(user.uid) ? (
+            <button disabled={true} className="bg-bgprimary px-2 text-white font-medium rounded-md py-2">
+              Requested
+            </button>
+          ) : (
+            <button onClick={hanldeAddFriend} className="bg-bgprimary px-2 text-white font-medium rounded-md py-2">
+              Add Request
+            </button>
+          )
+        ) : (
+          <button onClick={hanldeAddFriend} className="bg-bgprimary px-2 text-white font-medium rounded-md py-2">
+            Add Request
+          </button>
+        )}
       </div>
     </div>
   );
