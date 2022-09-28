@@ -4,12 +4,19 @@ import { getDatabase, ref, set, push, remove } from "firebase/database";
 import { AiTwotoneDelete } from "react-icons/ai";
 
 const ReqUser = ({ user, loggedInUser }) => {
+  const db = getDatabase();
   const hanldeDelete = () => {
-    const db = getDatabase();
     remove(ref(db, "addRequest/" + user.uid));
   };
 
-  const hanldeAddFriend = () => {};
+  const hanldeAddFriend = () => {
+    const db = getDatabase();
+    set(ref(db, "friends/" + user.uid), {
+      ...user,
+    }).then(() => {
+      remove(ref(db, "addRequest/" + user.uid));
+    });
+  };
 
   return (
     <div className="flex py-3  justify-between items-center ">
@@ -19,7 +26,7 @@ const ReqUser = ({ user, loggedInUser }) => {
         </picture>
       </div>
       <div>
-        <h2 className="font-pop font-semibold text-[18px]">{user.username}</h2>
+        <h2 className="font-pop font-semibold text-[18px]">{user.senderName}</h2>
         <p className="text-[#4D4D4D] font-pop text-[14px]">hello every one</p>
       </div>
       <div className="flex">

@@ -6,13 +6,17 @@ import { useSelector } from "react-redux";
 const User = ({ user, loggedInUser }) => {
   const { friendRequest } = useSelector((state) => state.friendRequest);
   const { addRequests } = useSelector((state) => state.addRequests);
+  const { friends } = useSelector((state) => state.friends);
+
+  const friendsSenderId = friends?.map((user) => user.senderId);
 
   const hanldeAddFriend = () => {
     const db = getDatabase();
     set(push(ref(db, "addRequest/")), {
-      username: loggedInUser.name,
+      senderName: loggedInUser.name,
       senderId: loggedInUser.uid,
       reciverId: user.uid,
+      reciverName: user.username,
     });
   };
 
@@ -20,8 +24,8 @@ const User = ({ user, loggedInUser }) => {
     ?.filter((state) => state.reciverId === loggedInUser.uid)
     .map((user) => user.senderId);
 
-  return filterSenderId?.length > 0 ? (
-    filterSenderId.includes(user.uid) ? null : (
+  return filterSenderId?.length > 0 || friendsSenderId?.length > 0 ? (
+    filterSenderId?.includes(user.uid) || friendsSenderId?.includes(user.uid) ? null : (
       <div className="flex py-3  justify-between items-center ">
         <div>
           <picture>
