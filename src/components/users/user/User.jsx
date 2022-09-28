@@ -9,6 +9,7 @@ const User = ({ user, loggedInUser }) => {
   const { friends } = useSelector((state) => state.friends);
 
   const friendsSenderId = friends?.map((user) => user.senderId);
+  const friendsReciverId = friends?.map((user) => user.reciverId);
 
   const hanldeAddFriend = () => {
     const db = getDatabase();
@@ -24,8 +25,10 @@ const User = ({ user, loggedInUser }) => {
     ?.filter((state) => state.reciverId === loggedInUser.uid)
     .map((user) => user.senderId);
 
-  return filterSenderId?.length > 0 || friendsSenderId?.length > 0 ? (
-    filterSenderId?.includes(user.uid) || friendsSenderId?.includes(user.uid) ? null : (
+  return filterSenderId?.length > 0 || friendsSenderId?.length > 0 || friendsReciverId?.length > 0 ? (
+    filterSenderId?.includes(user.uid) ||
+    friendsSenderId?.includes(user.uid) ||
+    friendsReciverId?.includes(user.uid) ? null : (
       <div className="flex py-3  justify-between items-center ">
         <div>
           <picture>
