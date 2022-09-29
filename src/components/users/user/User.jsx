@@ -8,8 +8,13 @@ const User = ({ user, loggedInUser }) => {
   const { addRequests } = useSelector((state) => state.addRequests);
   const { friends } = useSelector((state) => state.friends);
 
-  const friendsSenderId = friends?.map((user) => user.senderId);
-  const friendsReciverId = friends?.map((user) => user.reciverId);
+  const friendsSenderId = friends?.filter((user) => user.reciverId === loggedInUser.uid).map((user) => user.senderId);
+
+  const friendsReciverId = friends?.filter((user) => user.senderId === loggedInUser.uid).map((user) => user.reciverId);
+
+  const filterSenderId = addRequests
+    ?.filter((state) => state.reciverId === loggedInUser.uid)
+    .map((user) => user.senderId);
 
   const hanldeAddFriend = () => {
     const db = getDatabase();
@@ -20,10 +25,6 @@ const User = ({ user, loggedInUser }) => {
       reciverName: user.username,
     });
   };
-
-  const filterSenderId = addRequests
-    ?.filter((state) => state.reciverId === loggedInUser.uid)
-    .map((user) => user.senderId);
 
   return filterSenderId?.length > 0 || friendsSenderId?.length > 0 || friendsReciverId?.length > 0 ? (
     filterSenderId?.includes(user.uid) ||
