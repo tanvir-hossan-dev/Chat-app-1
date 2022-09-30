@@ -9,7 +9,7 @@ const Users = ({ title, height, usersArr }) => {
 
   let content;
 
-  if (usersArr?.length <= 1) {
+  if (usersArr?.length === 0) {
     content = <h2>User not found</h2>;
   } else if (usersArr?.length > 0) {
     content = usersArr

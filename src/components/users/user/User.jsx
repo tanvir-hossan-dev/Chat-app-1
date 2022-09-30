@@ -33,7 +33,7 @@ const User = ({ user, loggedInUser }) => {
       <div className="flex py-3  justify-between items-center ">
         <div>
           <picture>
-            <img src={photo} alt="" />{" "}
+            <img className="h-[60px] w-[60px] rounded-full" src={photo} alt="" />{" "}
           </picture>
         </div>
         <div>

@@ -47,7 +47,7 @@ const Login = () => {
     if (formValid()) {
       signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          const { displayName, email, uid } = user.user;
+          const { displayName, email, uid, photoURL } = user.user;
           dispatch(userLogedIn({ name: displayName, email, uid }));
           setInputs({ ...initialState });
           navigate("/inbox/home");

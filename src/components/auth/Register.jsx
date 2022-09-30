@@ -58,11 +58,12 @@ const Register = () => {
     const { name, email, password } = inputs;
     e.preventDefault();
     if (formValid()) {
-      console.log("successfull");
       createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
           updateProfile(auth.currentUser, {
             displayName: name,
+            photoURL:
+              "https://e7.pngegg.com/pngimages/117/435/png-clipart-human-figure-icon-illustration-user-silhouette-my-account-icon-animals-black-thumbnail.png",
           }).then(() => {
             const uid = auth.currentUser.uid;
             set(ref(db, "users/" + uid), {

@@ -3,16 +3,19 @@ import { Link, useLocation } from "react-router-dom";
 import { AiOutlineHome, AiOutlineMessage, AiOutlineSetting } from "react-icons/ai";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoLogOutOutline } from "react-icons/io5";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogedOut } from "../../redux/features/loggedinuser/LoggedInUser";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Menu } from "@headlessui/react";
 import Modal from "react-modal";
+import { useEffect } from "react";
+import { update, getDatabase } from "firebase/database";
 
 const Sidebar = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const [userPhoto, setUserPhoto] = useState(null);
 
   function openModal() {
     setIsOpen(true);
@@ -35,8 +38,11 @@ const Sidebar = () => {
 
   const location = useLocation();
   const auth = getAuth();
+  const db = getDatabase();
   const dispatch = useDispatch();
   const { loggedInUser } = useSelector((state) => state.loggedInUser);
+  const storage = getStorage();
+  const storageRef = ref(storage, loggedInUser.uid + ".png");
 
   const handleLogOut = (e) => {
     e.preventDefault();
@@ -53,30 +59,35 @@ const Sidebar = () => {
     setPhoto(e.target.files[0]);
   };
 
-  const handlePhotoUpload = async (e) => {
+  const handlePhotoUpload = (e) => {
     e.preventDefault();
-    const storage = getStorage();
-    const storageRef = ref(storage, loggedInUser.uid + ".png");
-    console.log(photo);
-    const data = await uploadBytes(storageRef, photo);
-    console.log(data);
+
+    uploadBytes(storageRef, photo);
+
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    getDownloadURL(storageRef)
+      .then((downloadURL) => {
+        setUserPhoto(downloadURL);
+      })
+      .then(() => {
+        updateProfile(auth.currentUser, {
+          photoURL: userPhoto,
+        });
+      });
+  }, [storageRef]);
 
   return (
     <>
       <div className="w-[186px] min-h-screen pt-[50px] bg-bgprimary">
         <div className="flex  flex-col justify-center items-center">
-          <div className="mb-[30px]">
-            <Menu as="div" className="relative ml-3">
+          <div className="mb-[30px] text-center">
+            <Menu as="div" className="relative ">
               <div>
-                <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none  focus:ring-white focus:ring-offset-2">
-                  <span className="sr-only">Open user menu</span>
-                  <img
-                    className="h-[80px] w-[80px] rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                    alt=""
-                  />
+                <Menu.Button className=" rounded-full  bg-gray-800 text-sm focus:outline-none  focus:ring-white focus:ring-offset-2">
+                  <img className="h-[80px] w-[80px] rounded-full" src={auth?.currentUser?.photoURL} alt="" />
                 </Menu.Button>
               </div>
 
