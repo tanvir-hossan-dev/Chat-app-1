@@ -1,14 +1,18 @@
 import React from "react";
 import photo from "../../../assests/photo.png";
-import { getDatabase, ref, set, push, remove } from "firebase/database";
 import { AiTwotoneDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getMessgeUserUid } from "../../../redux/features/messageUser/messageUserSlice";
 
 const FriendUser = ({ user, loggedInUser }) => {
-  // const hanldeDelete = () => {
-  //   const db = getDatabase();
-  //   remove(ref(db, "addRequest/" + user.uid));
-  // };
+  const dispatch = useDispatch();
+  const handleReciverSubmit = (reciverId) => {
+    dispatch(getMessgeUserUid(reciverId));
+  };
+  const handleSenderSubmit = (senderId) => {
+    dispatch(getMessgeUserUid(senderId));
+  };
 
   return (
     <div className="flex py-3   items-center ">
@@ -19,14 +23,13 @@ const FriendUser = ({ user, loggedInUser }) => {
       </div>
       <div className="ml-8">
         {user.senderId === loggedInUser.uid && (
-          <h2 className="font-pop font-semibold text-[18px]">
-            {" "}
-            <Link to="/inbox/message">{user.reciverName}</Link>{" "}
+          <h2 onClick={() => handleReciverSubmit(user.reciverId)} className="font-pop font-semibold text-[18px]">
+            <Link to="/inbox/message">{user.reciverName}</Link>
           </h2>
         )}
         {user.reciverId === loggedInUser.uid && (
-          <h2 className="font-pop font-semibold text-[18px]">
-            <Link to="/inbox/message">{user.senderName} </Link>
+          <h2 onClick={() => handleSenderSubmit(user.senderId)} className="font-pop font-semibold text-[18px]">
+            <Link to="/inbox/message">{user.senderName}</Link>
           </h2>
         )}
         <p className="text-[#4D4D4D] font-pop text-[14px]">hello every one</p>

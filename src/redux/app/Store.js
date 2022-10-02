@@ -3,6 +3,7 @@ import addRequestSlice from "../features/addRequestSlice/addRequestSlice";
 import friendRequestSlice from "../features/friendRequest/friendRequestSlice";
 import friendsSlice from "../features/friends/friendsSlice";
 import LoggedInUser from "../features/loggedinuser/LoggedInUser";
+import messageUserSlice from "../features/messageUser/messageUserSlice";
 import usersSlice from "../features/users/usersSlice";
 
 const Store = configureStore({
@@ -12,6 +13,7 @@ const Store = configureStore({
     addRequests: addRequestSlice,
     friendRequest: friendRequestSlice,
     friends: friendsSlice,
+    messageUserUid: messageUserSlice,
   },
 });
 
