@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import HomePage from "./components/pages/HomePage";
-import MessagePage from "./components/pages/MessagePage";
 import PrivateRoute from "./components/privateroute/PrivateRoute";
 import PublicRoute from "./components/publicrouter/PublicRoute";
+import HomePage from "./pages/HomePage";
+import MessagePage from "./pages/MessagePage";
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/inbox/home"
           element={

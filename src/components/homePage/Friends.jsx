@@ -20,7 +20,7 @@ const Friends = () => {
   }, [dispatch]);
   return (
     <>
-      <FriendUsers title="Friends" height="h-[680px]" friends={friends} />
+      <FriendUsers title="Friends" friends={friends} />
     </>
   );
 };

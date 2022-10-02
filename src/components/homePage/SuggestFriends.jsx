@@ -19,7 +19,7 @@ const SuggestFriends = () => {
       dispatch(getUsers(Arr));
     });
   }, [dispatch]);
-  return <Users usersArr={usersArr} title="Suggest Friends" height="h-[680px]" />;
+  return <Users usersArr={usersArr} title="Suggest Friends" />;
 };
 
 export default SuggestFriends;

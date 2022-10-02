@@ -16,6 +16,7 @@ const Sidebar = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [userPhoto, setUserPhoto] = useState(null);
+  const [confirmLogOut, setConfirmLogOut] = useState(false);
 
   function openModal() {
     setIsOpen(true);

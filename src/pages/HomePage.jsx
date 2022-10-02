@@ -1,18 +1,18 @@
 import React from "react";
-import Message from "../message/Message";
-import Sidebar from "../sidebar/Sidebar";
+import Home from "../components/home/Home";
+import Sidebar from "../components/sidebar/Sidebar";
 
-const MessagePage = () => {
+const HomePage = () => {
   return (
     <div className="flex">
       <div className="w-1/7">
         <Sidebar />
       </div>
       <div className="w-6/7">
-        <Message />
+        <Home />
       </div>
     </div>
   );
 };
 
-export default MessagePage;
+export default HomePage;
