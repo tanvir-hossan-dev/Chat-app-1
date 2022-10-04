@@ -6,7 +6,7 @@ const ChatHeader = () => {
   const { users } = useSelector((state) => state.users);
   const { userUid } = useSelector((state) => state.messageUserUid);
   const user = users.filter((user) => user.uid === userUid);
-  console.log(user);
+
   return (
     <div className="flex border-b pb-4">
       <div>

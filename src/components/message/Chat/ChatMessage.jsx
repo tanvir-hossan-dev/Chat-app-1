@@ -1,6 +1,20 @@
 import React from "react";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { useEffect } from "react";
 
 const ChatMessage = () => {
+  const db = getFirestore();
+  useEffect(() => {
+    const callFun = async () => {
+      const querySnapshot = await getDocs(collection(db, "messages"));
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id);
+        console.log(doc.data());
+      });
+    };
+    callFun();
+  }, []);
+
   return (
     <div className="my-4 h-[540px] overflow-y-auto ">
       <div className="float-right">
