@@ -1,29 +1,52 @@
 import React from "react";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { useEffect } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { getDatabase, ref, onValue } from "firebase/database";
+import moment from "moment/moment";
 
 const ChatMessage = () => {
-  const db = getFirestore();
+  const [messages, setMessages] = useState([]);
+  const { users } = useSelector((state) => state.users);
+  const { loggedInUser } = useSelector((state) => state.loggedInUser);
+  const { userUid } = useSelector((state) => state.messageUserUid);
+  const userArr = users.filter((user) => user.uid === userUid);
+  const user = userArr?.reduce((acc, curr) => {
+    acc = { ...curr };
+    return acc;
+  }, {});
+
+  const messgeId = loggedInUser.uid > user.uid ? `${loggedInUser.uid}-${user.uid}` : `${user.uid}-${loggedInUser.uid}`;
+
   useEffect(() => {
-    const callFun = async () => {
-      const querySnapshot = await getDocs(collection(db, "messages"));
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id);
-        console.log(doc.data());
-      });
-    };
-    callFun();
-  }, []);
+    const db = getDatabase();
+    const starCountRef = ref(db, "messages/" + messgeId);
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      const Arr = data && Object.keys(data).map((key) => ({ uid: key, ...data[key] }));
+      setMessages(Arr);
+    });
+  }, [messgeId]);
+
+  console.log(messages?.date);
 
   return (
     <div className="my-4 h-[540px] overflow-y-auto ">
-      <div className="float-right">
-        <p className="bg-bgprimary  text-white font-pop py-[12px] px-[15px] rounded-lg text-[16px]">this is me</p>
-      </div>
       <div>
-        <p className="bg-gray-200 float-left  text-black font-pop py-[12px] px-[15px] rounded-lg text-[16px]">
-          this is me
-        </p>
+        {messages?.length > 0 &&
+          messages.map((message) => (
+            <div className={`${message.senderId === loggedInUser.uid ? "text-right" : "text-left"} mb-4`}>
+              <p
+                key={message.uid}
+                className={` inline-block ${
+                  message.senderId === loggedInUser.uid ? "bg-bgprimary   text-white" : "bg-gray-200    text-black"
+                }   font-pop py-[12px] px-[15px] mb-[3px] rounded-lg text-[16px] `}
+              >
+                {message.msg}
+              </p>
+              <p className="font-pop text-[12px] text-gray-800 px-2">{moment(message.date).fromNow()}</p>
+            </div>
+          ))}
       </div>
     </div>
   );

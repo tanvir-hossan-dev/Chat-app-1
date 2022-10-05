@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ChatButton from "./ChatButton";
 import ChatHeader from "./ChatHeader";
 import ChatMessage from "./ChatMessage";
@@ -8,6 +8,14 @@ import { getUsers } from "../../../redux/features/users/usersSlice";
 
 const Chat = () => {
   const dispatch = useDispatch();
+
+  const { users } = useSelector((state) => state.users);
+  const { userUid } = useSelector((state) => state.messageUserUid);
+  const userArr = users.filter((user) => user.uid === userUid);
+  const user = userArr?.reduce((acc, curr) => {
+    acc = { ...curr };
+    return acc;
+  }, {});
 
   useEffect(() => {
     const db = getDatabase();
@@ -20,11 +28,13 @@ const Chat = () => {
     });
   }, [dispatch]);
   return (
-    <div className="px-8 py-4 shadow-md rounded-md min-h-screen">
-      <ChatHeader />
-      <ChatMessage />
-      <ChatButton />
-    </div>
+    user.uid && (
+      <div className="px-8 py-4 shadow-md rounded-md min-h-screen">
+        <ChatHeader user={user} />
+        <ChatMessage />
+        <ChatButton />
+      </div>
+    )
   );
 };
 

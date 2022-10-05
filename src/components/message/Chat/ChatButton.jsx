@@ -3,32 +3,40 @@ import { useState } from "react";
 import { AiOutlineSend } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { collection, addDoc } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
+import { getDatabase, ref, push, set } from "firebase/database";
 
 const ChatButton = () => {
   const [msg, setMsg] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
   const { users } = useSelector((state) => state.users);
   const { loggedInUser } = useSelector((state) => state.loggedInUser);
   const { userUid } = useSelector((state) => state.messageUserUid);
-  const user = users.filter((user) => user.uid === userUid);
-  const db = getFirestore();
+  const userArr = users.filter((user) => user.uid === userUid);
+  const user = userArr?.reduce((acc, curr) => {
+    acc = { ...curr };
+    return acc;
+  }, {});
+
+  const messgeId = loggedInUser.uid > user.uid ? `${loggedInUser.uid}-${user.uid}` : `${user.uid}-${loggedInUser.uid}`;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!msg) {
-      setError("Write something");
+      setError(true);
     } else {
-      try {
-        const docRef = await addDoc(collection(db, "messages"), {
-          name: loggedInUser.name,
-          senderId: loggedInUser.uid,
-          msg,
-        });
-        console.log(docRef);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
+      const db = getDatabase();
+
+      const postListRef = ref(db, "messages/" + messgeId);
+      const newPostRef = push(postListRef);
+      set(newPostRef, {
+        msg,
+        senderName: loggedInUser.name,
+        date: new Date(),
+        senderId: loggedInUser.uid,
+      }).then(() => {
+        setError(false);
+        setMsg("");
+      });
     }
   };
 
@@ -37,8 +45,8 @@ const ChatButton = () => {
       <div className="flex justify-between">
         <input
           type="text"
-          className=" border-2  border-solid border-[#B8B9CE]
-     rounded-lg text-[20px] font-pop outline-0  inline-block w-[87%] text-textprimary py-[10px] px-[15px]"
+          className={` border-2  border-solid ${error ? "border-red-500" : " border-[#B8B9CE]"}
+          rounded-lg text-[20px] font-pop outline-0  inline-block w-[87%] text-textprimary py-[10px] px-[15px]`}
           placeholder="Message"
           onChange={(e) => setMsg(e.target.value)}
           value={msg}
