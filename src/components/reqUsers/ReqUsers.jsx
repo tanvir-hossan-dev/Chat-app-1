@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFriendRequest } from "../../redux/features/friendRequest/friendRequestSlice";
 import ReqUser from "./reqUser/ReqUser";
 
-const ReqUsers = ({ title, height, addReq }) => {
+const ReqUsers = ({ title, addReq }) => {
   const { loggedInUser } = useSelector((state) => state.loggedInUser);
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ const ReqUsers = ({ title, height, addReq }) => {
   }
 
   return (
-    <div className={`mt-6 px-8 pb-2 shadow-md rounded-md ${height} overflow-y-auto`}>
+    <div className={` px-8 pb-2 shadow-md rounded-md min-h-screen overflow-y-auto`}>
       <h2 className="font-pop font-semibold pt-4 text-[20px]">{title}</h2>
       {content}
     </div>

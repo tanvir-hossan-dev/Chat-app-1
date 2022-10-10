@@ -20,7 +20,7 @@ const FriendReq = () => {
   return (
     <>
       {/* <Users title="Following" height="h-[320px]" /> */}
-      <ReqUsers addReq={addReq} title="Friend Request" height="h-[680px]" />
+      <ReqUsers addReq={addReq} title="Friend Request" />
     </>
   );
 };

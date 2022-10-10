@@ -88,7 +88,7 @@ const Login = () => {
   };
 
   return (
-    <div className="mt-20">
+    <div>
       <div className="w-[565px] bg-[#f1f1f1] px-10 py-5 rounded-xl mx-auto">
         <h2 className="font-pop font-bold text-[34px] text-textprimary">Login to your account!</h2>
         <div className="w-[480px]">
@@ -116,7 +116,7 @@ const Login = () => {
           <p className="text-textprimary mt-4 text-center font-pop text-[16px]">
             Don’t have an account ?{" "}
             <Link to="/register" className="text-[#EA6C00] font-bold">
-              Sign In
+              Sign Up
             </Link>
           </p>
           {error && <Error message={error} />}

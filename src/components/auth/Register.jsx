@@ -20,7 +20,6 @@ const Register = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const db = getDatabase();
-  const data = useSelector((state) => state.loggedInUser);
   const dispatch = useDispatch();
 
   const formValid = () => {
@@ -84,11 +83,11 @@ const Register = () => {
   };
 
   return (
-    <div className="">
-      <div className="w-[650px] bg-[#f1f1f1] px-10 py-5 rounded-xl mx-auto">
+    <div className="flex justify-center ">
+      <div className="w-[565px] bg-[#f1f1f1] px-10 py-5  rounded-xl ">
         <h2 className="font-pop font-bold text-[34px] text-textprimary">Get started with easily register</h2>
         <p className="text-[20px] font-normal text-textprimary">Free register and you can enjoy it</p>
-        <div className="w-[480px]">
+        <div>
           <form onSubmit={handleSubmit}>
             <FormInput name="name" type="text" placeholder="Name" value={inputs.name} onChange={handleOnChange} />
             <FormInput name="email" type="email" placeholder="E-mail" value={inputs.email} onChange={handleOnChange} />
