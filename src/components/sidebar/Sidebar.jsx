@@ -38,6 +38,7 @@ const Sidebar = () => {
   };
 
   const location = useLocation();
+  console.log(location);
   const auth = getAuth();
   const db = getDatabase();
   const dispatch = useDispatch();
@@ -133,11 +134,11 @@ const Sidebar = () => {
                     : `text-[#CFC2FC] text-[48px] py-6  px-6 my-2`
                 }
               >
-                <Link>
+                <Link to="/inbox/notifi">
                   <IoMdNotificationsOutline />
                 </Link>
               </li>
-              <li
+              {/* <li
                 className={
                   location.pathname === "/inbox/setting"
                     ? `text-textprimary text-[48px] py-6 px-6 my-2 bg-white rounded-3xl`
@@ -147,8 +148,8 @@ const Sidebar = () => {
                 <Link>
                   <AiOutlineSetting />
                 </Link>
-              </li>
-              <li className="text-white text-[48px] mt-12 px-6">
+              </li> */}
+              <li className="text-white text-[48px] mt-32 px-6">
                 <button onClick={handleLogOut}>
                   <IoLogOutOutline />
                 </button>

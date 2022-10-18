@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getDatabase, ref, onValue } from "firebase/database";
-import moment from "moment/moment";
 
 const ChatMessage = () => {
   const [messages, setMessages] = useState([]);
@@ -28,7 +27,7 @@ const ChatMessage = () => {
     });
   }, [messgeId]);
 
-  console.log(messages?.date);
+  console.log(messages);
 
   return (
     <div className="my-4 h-[540px] overflow-y-auto ">
@@ -44,7 +43,6 @@ const ChatMessage = () => {
               >
                 {message.msg}
               </p>
-              <p className="font-pop text-[12px] text-gray-800 px-2">{moment(message.date).fromNow()}</p>
             </div>
           ))}
       </div>

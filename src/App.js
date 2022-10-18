@@ -5,6 +5,7 @@ import PrivateRoute from "./components/privateroute/PrivateRoute";
 import PublicRoute from "./components/publicrouter/PublicRoute";
 import HomePage from "./pages/HomePage";
 import MessagePage from "./pages/MessagePage";
+import NotifiPage from "./pages/NotifiPage";
 
 function App() {
   return (
@@ -40,6 +41,15 @@ function App() {
           element={
             <PrivateRoute>
               <HomePage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/inbox/notifi"
+          element={
+            <PrivateRoute>
+              {" "}
+              <NotifiPage />{" "}
             </PrivateRoute>
           }
         />
